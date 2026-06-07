@@ -67,7 +67,7 @@ func Buffer(vendor *string, name, version, env string, utc bool) []string {
 	buffer := []string{}
 
 	buffer = append(buffer, printLine())
-	buffer = append(buffer, fmt.Sprintf("%s - %s\n", vendorStr, strings.ToUpper(name)))
+	buffer = append(buffer, fmt.Sprintf("%s - %s", vendorStr, strings.ToUpper(name)))
 	buffer = append(buffer, printLine())
 	buffer = append(buffer, printSpace())
 	buffer = append(buffer, printLine())
