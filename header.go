@@ -53,7 +53,7 @@ func amsLogoColor() string {
 	return str
 }
 
-func Print(vendor *string, name, version, env string, utc bool) {
+func Buffer(vendor *string, name, version, env string, utc bool) []string {
 	now := time.Now()
 	if utc {
 		now = now.UTC()
@@ -63,15 +63,27 @@ func Print(vendor *string, name, version, env string, utc bool) {
 	if vendor != nil {
 		vendorStr = *vendor
 	}
-	fmt.Println(printLine())
-	fmt.Printf("%s - %s\n", vendorStr, strings.ToUpper(name))
-	fmt.Println(printLine())
-	fmt.Println(printSpace())
-	fmt.Println(printLine())
-	fmt.Println("SYSTEM INFORMATION")
-	fmt.Println(printLine())
-	fmt.Println("VERSION:          ", strings.ToUpper(version))
-	fmt.Println("MODE:             ", strings.ToUpper(env))
-	fmt.Println("DATE:             ", now.Format(time.RFC3339))
-	fmt.Println(printSpace())
+
+	buffer := []string{}
+
+	buffer = append(buffer, printLine())
+	buffer = append(buffer, fmt.Sprintf("%s - %s\n", vendorStr, strings.ToUpper(name)))
+	buffer = append(buffer, printLine())
+	buffer = append(buffer, printSpace())
+	buffer = append(buffer, printLine())
+	buffer = append(buffer, "SYSTEM INFORMATION")
+	buffer = append(buffer, printLine())
+	buffer = append(buffer, fmt.Sprintf("VERSION:          %s", strings.ToUpper(version)))
+	buffer = append(buffer, fmt.Sprintf("MODE:             %s", strings.ToUpper(env)))
+	buffer = append(buffer, fmt.Sprintf("DATE:             %s", now.Format(time.RFC3339)))
+	buffer = append(buffer, printSpace())
+
+	return buffer
+}
+
+func Print(vendor *string, name, version, env string, utc bool) {
+	buffer := Buffer(vendor, name, version, env, utc)
+	for _, line := range buffer {
+		fmt.Println(line)
+	}
 }
