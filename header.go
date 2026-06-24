@@ -53,7 +53,7 @@ func amsLogoColor() string {
 	return str
 }
 
-func Buffer(vendor *string, name, version, env string, utc bool) []string {
+func Buffer(vendor *string, name, version, env string, utc bool, port *int) []string {
 	now := time.Now()
 	if utc {
 		now = now.UTC()
@@ -75,14 +75,18 @@ func Buffer(vendor *string, name, version, env string, utc bool) []string {
 	buffer = append(buffer, printLine())
 	buffer = append(buffer, fmt.Sprintf("VERSION:          %s", strings.ToUpper(version)))
 	buffer = append(buffer, fmt.Sprintf("MODE:             %s", strings.ToUpper(env)))
+	if port != nil {
+		buffer = append(buffer, fmt.Sprintf("PORT:             %s", strconv.Itoa(*port)))
+	}
 	buffer = append(buffer, fmt.Sprintf("DATE:             %s", now.Format(time.RFC3339)))
+
 	buffer = append(buffer, printSpace())
 
 	return buffer
 }
 
-func Print(vendor *string, name, version, env string, utc bool) {
-	buffer := Buffer(vendor, name, version, env, utc)
+func Print(vendor *string, name, version, env string, utc bool, port *int) {
+	buffer := Buffer(vendor, name, version, env, utc, port)
 	for _, line := range buffer {
 		fmt.Println(line)
 	}
